@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee List</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            margin-top: 20px;
+            color: #2c3e50;
+        }
+
+        /* Button Styles */
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            margin: 10px 0;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Form Styles */
+        form {
+            background-color: #ffffff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            max-width: 500px;
+            width: 100%;
+            
+        }
+
+        form input[type="text"],
+        form input[type="email"],
+        form input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        /* Table Styles */
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        td img {
+            border-radius: 50%;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .update-btn {
+            background-color: #27ae60;
+            padding: 6px 10px;
+            font-size: 14px;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+
+        .update-btn:hover {
+            background-color: #219150;
+        }
+
+        .delete-btn {
+            background-color: #e74c3c;
+            padding: 6px 10px;
+            font-size: 14px;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+
+        /* Specific styling for user interface */
+        #employee-table {
+            justify-content: center;
+            align-items: center;
+            width: 80%;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Employee List</h1>
+    <button onclick="window.location.href='/'">Toggle to Admin Interface</button>
+    <div id="employee-table"></div>
+
+    <script>
+        async function fetchEmployees() {
+            const response = await fetch('/api/employees');
+            const employees = await response.json();
+            const table = `
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Profile Picture</th>
+                    </tr>
+                    ${employees.map(employee => `
+                        <tr>
+                            <td>${employee.employeeName}</td>
+                            <td>${employee.employeeEmail}</td>
+                            <td><img src="${employee.employeeProfilePic}" alt="Profile" width="50" height="50"></td>
+                        </tr>
+                    `).join('')}
+                </table>
+            `;
+            document.getElementById('employee-table').innerHTML = table;
+        }
+
+        // Refresh employee data every 5 seconds
+        setInterval(fetchEmployees, 5000);
+        fetchEmployees();
+    </script>
+</body>
+</html>
